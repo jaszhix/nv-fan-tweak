@@ -4,8 +4,14 @@
   "description": "Fan curve controller for Nvidia's Linux driver",
   "main": "index.js",
   "scripts": {
-    "test": "NVFT_TEST=1 node --inspect --experimental-modules  test/index.mjs"
+    "test": "NVFT_TEST=1 node test/index.js"
   },
+  "files": [
+    "bin",
+    "index.js",
+    "exc.js",
+    "config.json"
+  ],
   "bin": "./bin/nv-fan-tweak",
   "repository": {
     "type": "git",

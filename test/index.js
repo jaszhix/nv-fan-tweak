@@ -1,5 +1,5 @@
-import test from 'tape';
-import {getFanSpeed} from '../index.mjs';
+const test = require('tape');
+const {getFanSpeed}  = require('../index.js');
 
 test('should return 40% at 40C with defaults', function (t) {
   t.equal(getFanSpeed('40'), 40);
@@ -61,6 +61,6 @@ test('should not go below 0%', function (t) {
   t.end();
 });
 test('should throw error if regex doesn\'t match', function (t) {
-  t.throws(() => getFanSpeed('abc'), new Error('Didn\'t receive a fan speed value from nvidia-smi.'));
+  t.throws(() => getFanSpeed('abc'), new Error('Didn\'t receive a temperature value from nvidia-smi.'));
   t.end();
 });

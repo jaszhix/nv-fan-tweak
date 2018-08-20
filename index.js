@@ -1,6 +1,6 @@
-import {exec} from 'child_process';
-import pkgJson from './package.json';
-import config from './config.json';
+const exc = require('./exc.js');
+const pkgJson = require('./package.json');
+const config = require('./config.json');
 
 process.title = pkgJson.name;
 
@@ -11,21 +11,9 @@ const convertRange = (value, r1, r2) => {
   return (value - r1[0]) * (r2[1] - r2[0]) / (r1[1] - r1[0]) + r2[0];
 };
 
-const exc = (cmd) => {
-  return new Promise((resolve, reject) => {
-    exec(cmd, (err, stdout, stderr) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-      resolve(stdout.trim());
-    });
-  });
-};
-
-export const getFanSpeed = (tempString) => {
+const getFanSpeed = (tempString) => {
   let temp = tempString.match(/(\d)+/g);
-  if (!temp) throw new Error('Didn\'t receive a fan speed value from nvidia-smi.');
+  if (!temp) throw new Error('Didn\'t receive a temperature value from nvidia-smi.');
   temp = parseInt(temp[0]);
 
   let range;
@@ -76,3 +64,5 @@ const checkTemp = () => {
 };
 
 if (!process.env.NVFT_TEST) checkTemp();
+
+module.exports = {getFanSpeed};
