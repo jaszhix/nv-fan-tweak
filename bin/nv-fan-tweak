@@ -1,0 +1,5 @@
+#!/bin/sh
+nvidia-settings -a [gpu:0]/GPUPowerMizerMode=1 > /dev/null
+nvidia-settings -a [gpu:0]/GPUFanControlState=1 > /dev/null
+nvidia-settings -a [fan:0]/GPUTargetFanSpeed=40 > /dev/null
+node --experimental-modules  index.mjs &>/dev/null &disown;

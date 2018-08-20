@@ -1,0 +1,28 @@
+{
+  "name": "nv-fan-tweak",
+  "version": "1.0.0",
+  "description": "Fan curve controller for Nvidia's Linux driver",
+  "main": "index.js",
+  "scripts": {
+    "test": "NVFT_TEST=1 node --inspect --experimental-modules  test/index.mjs"
+  },
+  "bin": "./bin/nv-fan-tweak",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jaszhix/nv-fan-tweak"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-eslint": "^8.2.6",
+    "eslint": "^5.4.0",
+    "tape": "^4.9.1"
+  },
+  "engines": {
+    "node": ">=10.9.0"
+  },
+  "os": [
+    "linux"
+  ]
+}
