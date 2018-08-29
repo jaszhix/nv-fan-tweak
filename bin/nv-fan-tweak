@@ -3,13 +3,17 @@
 const {join} = require('path');
 const {spawn} = require('child_process');
 const exc = require(join(__dirname, '../exc.js'));
+const {rEach} = require(join(__dirname, '../lang.js'));
+const {fanCurves} = require(join(__dirname, '../config.json'));
 
-exc('nvidia-settings -a [gpu:0]/GPUPowerMizerMode=1 > /dev/null')
-  .then(exc('nvidia-settings -a [gpu:0]/GPUFanControlState=1 > /dev/null'))
-  .then(() => {
-    spawn(process.argv[0], [`${join(__dirname, '../index.js')}`], {
-      detached: true,
-      stdio: 'ignore'
-    }).unref();
-  })
-  .catch((err) => console.log(err));
+rEach(fanCurves, (fanCurve, i, next) => { // TODO: Handle cases where nvidia-settings uses a different GPU index than nvidia-smi.
+  exc(`nvidia-settings -a [gpu:${i}]/GPUPowerMizerMode=1 > /dev/null`)
+    .then(exc(`nvidia-settings -a [gpu:${i}]/GPUFanControlState=1 > /dev/null`))
+    .then(next)
+    .catch((err) => console.log(err));
+}, () => {
+  spawn(process.argv[0], [`${join(__dirname, '../index.js')}`], {
+    detached: true,
+    stdio: 'ignore'
+  }).unref();
+});

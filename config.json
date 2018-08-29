@@ -1,13 +1,15 @@
 {
   "interval": 2000,
-  "fanCurve": [
-    {
-      "temp": 40,
-      "fanSpeed": 40
-    },
-    {
-      "temp": 60,
-      "fanSpeed": 80
-    }
+  "fanCurves": [
+    [
+      {
+        "temp": 40,
+        "fanSpeed": 40
+      },
+      {
+        "temp": 60,
+        "fanSpeed": 80
+      }
+    ]
   ]
 }

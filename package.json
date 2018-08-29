@@ -10,6 +10,7 @@
     "bin",
     "index.js",
     "exc.js",
+    "lang.js",
     "config.json"
   ],
   "bin": "./bin/nv-fan-tweak",

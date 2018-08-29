@@ -1,6 +1,6 @@
 # nv-fan-tweak
 
-This is a simple Node script that is intended to run in the background and control the fan speed based on a curve. The fan curve and interval is configured by editing config.json.
+This is a simple Node script that is intended to run in the background and control the fan speed based on a curve. The fan curve and interval is configured by editing config.json. Each index in the `fanCurves` array corresponds to the GPU index `nvidia-smi` queries.
 
 # Usage
 

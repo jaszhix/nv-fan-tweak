@@ -1,17 +1,20 @@
 const exc = require('./exc.js');
 const pkgJson = require('./package.json');
-const config = require('./config.json');
+const {fanCurves, interval} = require('./config.json');
+const {rEach} = require('./lang.js');
 
 process.title = pkgJson.name;
 
-const {fanCurve, interval} = config;
 let timeout;
 
 const convertRange = (value, r1, r2) => {
   return (value - r1[0]) * (r2[1] - r2[0]) / (r1[1] - r1[0]) + r2[0];
 };
 
-const getFanSpeed = (tempString) => {
+const getFanSpeed = (args) => {
+  let [tempString, gpuIndex] = args;
+  let fanCurve = fanCurves[gpuIndex];
+  if (!fanCurve) throw new Error('getFanSpeed: Invalid GPU index.');
   let temp = tempString.match(/(\d)+/g);
   if (!temp) throw new Error('Didn\'t receive a temperature value from nvidia-smi.');
   temp = parseInt(temp[0]);
@@ -52,15 +55,25 @@ const setFanSpeed = (fanSpeed) => {
   return exc(`nvidia-settings -a [fan:0]/GPUTargetFanSpeed=${fanSpeed}`);
 };
 
+const getTemp = (gpuIndex) => {
+  return new Promise((resolve, reject) => {
+    exc(`nvidia-smi -q --gpu=${gpuIndex} | grep "GPU Current Temp"`).then((tempString) => {
+      resolve([tempString, gpuIndex]);
+    }).catch((err) => reject(err))
+  });
+};
+
 const checkTemp = () => {
-  exc('nvidia-smi -q --gpu=1 | grep "GPU Current Temp"')
-    .then(getFanSpeed)
-    .then(setFanSpeed)
-    .then(() => {
-      if (timeout) clearTimeout(timeout);
-      timeout = setTimeout(checkTemp, interval);
-    })
-    .catch((err) => console.log(err));
+  rEach(fanCurves, (fanCurve, i, next) => {
+    getTemp(i)
+      .then(getFanSpeed)
+      .then(setFanSpeed)
+      .then(next)
+      .catch((err) => console.log(err));
+  }, () => {
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(checkTemp, interval);
+  });
 };
 
 if (!process.env.NVFT_TEST) checkTemp();
