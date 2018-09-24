@@ -10,6 +10,16 @@
         "temp": 60,
         "fanSpeed": 80
       }
+    ],
+    [
+      {
+        "temp": 40,
+        "fanSpeed": 40
+      },
+      {
+        "temp": 60,
+        "fanSpeed": 80
+      }
     ]
   ]
 }

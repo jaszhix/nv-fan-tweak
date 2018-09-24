@@ -1,6 +1,6 @@
 {
   "name": "nv-fan-tweak",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Fan curve controller for Nvidia's Linux driver",
   "main": "index.js",
   "scripts": {
